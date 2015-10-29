@@ -126,7 +126,7 @@ server.route({
     config: {
         validate: {
             params: {
-                id: Joi.number().integer().positive()
+                id: Joi.string()
             }
         },
         pre: [
