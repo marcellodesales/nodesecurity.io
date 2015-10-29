@@ -1,6 +1,9 @@
 var Hapi = require('hapi');
 var Joi = require('joi');
 var config = require('config');
+var API = require('./api.js');
+var moment = require('moment');
+var marked = require('marked');
 
 // Create a server with a host and port
 var server = new Hapi.Server(config.hapi.options);
@@ -11,7 +14,10 @@ server.views({
         jade: require('jade'),
     },
     path: './views',
-    isCached: process.env.NODE_ENV==='production'
+    isCached: process.env.NODE_ENV==='production',
+    context: {
+        moment: moment
+    }
 });
 
 server.route({
@@ -94,23 +100,78 @@ server.route({
     }
 });
 
+server.route({
+    method: 'GET',
+    path: '/advisories',
+    config: {
+        validate: {
+            query: {
+                page: Joi.number().integer().min(0).default(0)
+            }
+        },
+        pre: [
+            {method: API.fetchAll, assign: 'advisories'}
+        ]
+    },
+    handler: {
+        view: {
+            template: 'advisories'
+        }
+    }
+});
+
+server.route({
+   method: 'GET',
+    path: '/advisories/{id}',
+    config: {
+        validate: {
+            params: {
+                id: Joi.number().integer().positive()
+            }
+        },
+        pre: [
+            {method: API.fetchOne, assign: 'advisory'}
+        ]
+    },
+    handler: function (request, reply) {
+
+        var overviewHtml = marked(request.pre.advisory.overview);
+        var recommendationHtml = marked(request.pre.advisory.recommendation);
+        var referencesHtml = marked(request.pre.advisory.references);
+
+        var html = {
+            overview: overviewHtml,
+            recommendation: recommendationHtml,
+            references: referencesHtml
+        };
+
+        return reply.view('advisory', { advisory: request.pre.advisory, html: html });
+    }
+
+});
+
 
 server.register([
-    {
-        register: require('./hapi-advisories'),
-        options: null
-    },
+    // {
+    //     register: require('./hapi-advisories'),
+    //     options: null
+    // },
     {
         register: require('good'),
         options: {
             reporters: [{
                 reporter: require('good-console'),
-                events: { log: '*', response: '*', request: '*' }
+                events: {
+                    log: '*',
+                    response: '*',
+                    request: '*',
+                    error: '*'
+                }
             }]
         }
     }
 ], function (err) {
-    if (err) { 
+    if (err) {
         console.log('Failed to load plugin: ' + err);
     } else {
         console.log('Loaded advisories');

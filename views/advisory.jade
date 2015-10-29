@@ -5,43 +5,43 @@ block content
 
     section.module-intro.grid-flex-container.mt2
       .grid-flex-cell
-        h1.advisory-title= advisory.meta.title
+        h1.advisory-title= advisory.title
 
-        p #{advisory.meta.publish_date}
-        if advisory.meta.cves
-          .advisory-author
-            if advisory.meta.cves.length > 0
-              each cve in advisory.meta.cves
-                p: <a href='#{cve.link}'>#{cve.name}</a>
-              #{advisory.meta.cve} 
+      .advisory-details
+        p #{advisory.publish_date}
+        if advisory.cves
+          p.advisory-author
+            if advisory.cves.length > 0
+              each cve in advisory.cves
+                span: <a href='http://cve.mitre.org/cgi-bin/cvename.cgi?name=#{cve}'>#{cve}</a>
             else
-              p CVE-PENDING
-          p Credit: #{advisory.meta.author}
+              span CVE-PENDING
+            span
+              = ' • '
+              | Credit: #{advisory.author}
 
-      .module-details.grid-flex-cell.grid-flex-cell-1of3
+      .module-details
         .module-name
-          a(href='https://npmjs.org/package/#{advisory.meta.module_name}')
+          a(href='https://npmjs.org/package/#{advisory.module_name}')
             | #{advisory.module_name}
-        if advisory.meta.vulnerable_versions === '<=99.999.99999'
+        if advisory.vulnerable_versions === '<=99.999.99999'
           .module-version Vulnerable: All
         else
-          .module-version Vulnerable: #{advisory.meta.vulnerable_versions}
+          .module-version Vulnerable: #{advisory.vulnerable_versions}
 
-        if advisory.meta.patched_versions === '<0.0.0'
+        if advisory.patched_versions === '<0.0.0'
           .module-version Patched: None
         else
-          .module-version Patched: #{advisory.meta.patched_versions}
+          .module-version Patched: #{advisory.patched_versions}
 
     section
       .advisory-description
-        != advisory.html
+        h2 Overview
+        != html.overview
 
-    section
-      #disqus_thread
-        script(type='text/javascript').
-          var disqus_shortname = 'nodesecurity';
-          (function() {
-              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-          })();
+        h2 Recommendations
+        != html.recommendation
+
+        if html.references
+          h2 References
+          != html.references

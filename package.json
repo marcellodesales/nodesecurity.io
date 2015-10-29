@@ -33,11 +33,13 @@
     "jade": "^1.8.1",
     "joi": "^6.6.1",
     "meta-marked": "^0.3.1",
+    "moment": "^2.10.6",
     "postageapp": "^1.1.2",
     "postmark": "~0.2.0",
     "rss": "^1.0.1",
     "semver": "^2.3.2",
-    "walk": "~2.3.1"
+    "walk": "~2.3.1",
+    "wreck": "^6.3.0"
   },
   "devDependencies": {
     "autoprefixer-stylus": "^0.6.0",

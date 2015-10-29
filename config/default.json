@@ -1,4 +1,8 @@
 {
+  "api": {
+    "baseUrl": "https://api.requiresafe.com",
+    "json": true
+  },
   "semver_dir": "/tmp/",
   "hapi": {
     "hostname": "127.0.0.1",
