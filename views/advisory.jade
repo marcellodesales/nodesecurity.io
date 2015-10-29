@@ -8,7 +8,7 @@ block content
         h1.advisory-title= advisory.title
 
       .advisory-details
-        p #{advisory.publish_date}
+        p #{moment(advisory.publish_date).format('MMMM Do, YYYY')}
         if advisory.cves
           p.advisory-author
             if advisory.cves.length > 0
@@ -39,7 +39,7 @@ block content
         h2 Overview
         != html.overview
 
-        h2 Recommendations
+        h2 Remediation
         != html.recommendation
 
         if html.references
