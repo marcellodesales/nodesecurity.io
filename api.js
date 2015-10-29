@@ -1,4 +1,4 @@
-var config = require('getconfig');
+var config = require('config');
 var Wreck = require('wreck');
 var marked = require('marked');
 var Boom = require('boom');
@@ -7,7 +7,7 @@ var wreck = Wreck.defaults(config.api);
 
 
 // Fetch by ID or Slug
-module.exports.fetchOne = fetchOne = function (request, reply) {
+module.exports.fetchOne = function (request, reply) {
 
     wreck.get('/advisories/' + request.params.id, function (err, res, payload) {
         if (err || res.statusCode !== 200) {
@@ -34,7 +34,7 @@ module.exports.fetchOne = fetchOne = function (request, reply) {
     });
 };
 
-module.exports.fetchAll = fetchAll = function (request, reply) {
+module.exports.fetchAll = function (request, reply) {
     var limit = 10;
     var offset = request.query.page * limit;
     var url = '/advisories?limit=' + limit + '&offset=' + offset;
