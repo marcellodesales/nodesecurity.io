@@ -7,20 +7,20 @@ block content
       .grid-flex-cell
         h1.advisory-title= advisory.title
 
-      .advisory-details
-        p #{moment(advisory.publish_date).format('MMMM Do, YYYY')}
-        if advisory.cves
-          p.advisory-author
-            if advisory.cves.length > 0
-              each cve in advisory.cves
-                span: <a href='http://cve.mitre.org/cgi-bin/cvename.cgi?name=#{cve}'>#{cve}</a>
-            else
-              span CVE-PENDING
-            span
-              = ' • '
-              | Credit: #{advisory.author}
+        .advisory-details
+          p #{moment(advisory.publish_date).format('MMMM Do, YYYY')}
+          if advisory.cves
+            p.advisory-author
+              if advisory.cves.length > 0
+                each cve in advisory.cves
+                  span: <a href='http://cve.mitre.org/cgi-bin/cvename.cgi?name=#{cve}'>#{cve}</a>
+              else
+                span CVE-PENDING
+              span
+                = ' • '
+                | Credit: #{advisory.author}
 
-      .module-details
+      .module-details.grid-flex-cell.grid-flex-cell-1of3
         .module-name
           a(href='https://npmjs.org/package/#{advisory.module_name}')
             | #{advisory.module_name}
