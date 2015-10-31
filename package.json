@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/nodesecurity/nodesecurity-www",
   "dependencies": {
+    "acorn-globals": "1.0.6",
     "boom": "^2.6.1",
     "config": "^1.8.1",
     "getconfig": "^2.2.0",
