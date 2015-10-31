@@ -1,0 +1,5 @@
+branches:
+  only:
+    - rs
+script:
+  - echo "no tests"
