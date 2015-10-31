@@ -150,12 +150,29 @@ server.route({
 
 });
 
+server.route({
+    method: 'GET',
+    path: '/validate/{module}/{version}',
+    config: {
+        handler: function (request, reply) {
+
+            return reply([{}]);
+        },
+    }
+});
+
+server.route({
+    method: 'POST',
+    path: '/validate/shrinkwrap',
+    config: {
+        handler: function (request, reply) {
+
+            return reply([{}]);
+        },
+    }
+});
 
 server.register([
-    // {
-    //     register: require('./hapi-advisories'),
-    //     options: null
-    // },
     {
         register: require('good'),
         options: {
