@@ -23,3 +23,31 @@ block content
         pre
           code nsp check
 
+      section
+        h3 gulp-nsp
+        p A gulp plugin that runs the Node Security Project audit on your package.json or npm-shrinkwrap.json
+        h4 Installation
+        pre
+          code npm install gulp-nsp --save
+        p Then in your gulpfile, add the following task like so.
+        pre
+          code
+            | var gulpNSP = require('gulp-nsp');
+            | &nbsp;
+            | //To check your package.json
+            | gulp.task('nsp', function (cb) {
+            |   gulpNSP({package: __dirname + '/package.json'}, cb);
+            | });
+            | &nbsp;
+            | //To check your shrinkwrap.json
+            | gulp.task('nsp', function (cb) {
+            |   gulpNSP({shrinkwrap: __dirname + '/npm-shrinkwrap.json'}, cb);
+            | });
+            | &nbsp;
+            | //If you don't want to stop your gulp flow if some vulnerabilities have been found use the stopOnError option:
+            | gulp.task('nsp', function (cb) {
+            |   gulpNSP({
+            |     package: __dirname + '/package.json',
+            |     stopOnError: false
+            |   }, cb);
+            | });
