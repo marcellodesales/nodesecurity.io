@@ -33,7 +33,10 @@ block content
               input.form-input(id='fieldEmail', name='email', type='text', required)
             .form-element
               label(for='module') Module name & version
-              input.form-input(id='module', name='module', type='text')
+              if params.module
+                input.form-input(id='module', name='module', type='text', value='#{params.module}')
+              else
+                input.form-input(id='module', name='module', type='text')
             .form-element
               label(for='desc') Description of vulnerability
               textarea.form-input(id='desc', name='description', type='text')

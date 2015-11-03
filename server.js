@@ -54,6 +54,14 @@ server.route({
 
 server.route({
     method: 'GET',
+    path: '/report/{module}',
+    handler: {
+        view: 'report'
+    }
+});
+
+server.route({
+    method: 'GET',
     path: '/thanks',
     handler: {
         view: 'email-success'
@@ -157,7 +165,7 @@ server.route({
         handler: function (request, reply) {
 
             return reply([{}]);
-        },
+        }
     }
 });
 
