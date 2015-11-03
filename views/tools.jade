@@ -70,10 +70,18 @@ block content
             | 
             | //To check your package.json
             | gulp.task('nsp', function (cb) {
-            |   gulpNSP('./package.json', cb);
+            |   gulpNSP({package: __dirname + '/package.json'}, cb);
             | });
             | 
             | //To check your shrinkwrap.json
             | gulp.task('nsp', function (cb) {
-            |   gulpNSP('./npm-shrinkwrap.json', cb);
+            |   gulpNSP({shrinkwrap: __dirname + '/npm-shrinkwrap.json'}, cb);
+            | });
+            |
+            | //If you don't want to stop your gulp flow if some vulnerabilities have been found use the stopOnError option:
+            | gulp.task('nsp', function (cb) {
+            |   gulpNSP({
+            |     package: __dirname + '/package.json',
+            |     stopOnError: false
+            |   }, cb);
             | });
