@@ -15,9 +15,9 @@ block content
           p Please fill out the form to report a vulnerability or email a description to <a href='mailto:report@nodesecurity.io'>report@nodesecurity.io</a>.
           h4 Our disclosure timeline
           ol.timeline
-            li Vulnerability is identified or Disclosed to Node Security Project or <a href='//requiresafe.com'>RequireSafe</a> - We will endeavor to keep reporter / finder in the loop with all communications / events.
+            li Vulnerability is identified or Disclosed to Node Security Project - We will endeavor to keep reporter / finder in the loop with all communications / events.
             li Maintainers are notified if it's not a self disclosure.
-            li RequireSafe customers are notified and provided guidance and recommendations for mitigation
+            li Node Security subscribers are notified and provided guidance and recommendations for mitigation
             li After a fix is made available the public advisory is finalized and a <a href='http://cve.mitre.org/'>CVE</a> requested.
             li If no fix is available after 45 days the advisory will timeout and will be made publicly available.
 
@@ -33,7 +33,10 @@ block content
               input.form-input(id='fieldEmail', name='email', type='text', required)
             .form-element
               label(for='module') Module name & version
-              input.form-input(id='module', name='module', type='text')
+              if params.module
+                input.form-input(id='module', name='module', type='text', value='#{params.module}')
+              else
+                input.form-input(id='module', name='module', type='text')
             .form-element
               label(for='desc') Description of vulnerability
               textarea.form-input(id='desc', name='description', type='text')

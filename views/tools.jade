@@ -17,45 +17,11 @@ block content
         p nsp is the main command line interface to the Node Security Project. It allows for auditing a package.json or npm-shrinkwrap.json file against the API.
         h4 Installation
         pre
-          code npm i nsp -g
+          code npm install nsp -global
         h4 Example Usage
-        p From inside your project directory you can audit your package.json file
+        p From inside your project directory
         pre
-          code nsp package
-
-      section
-        h3 grunt-nsp-shrinkwrap
-
-      section
-        h3 grunt-nsp-package
-        p Grunt task that audits your package.json file against the nodesecurity.io API for validation that dependencies or dependencies of dependencies are not vulnerable to known vulnerabilities.
-        h4 Installation
-        pre
-          code npm install grunt-nsp-package --save-dev
-        p Add this line to your project's grunt.js gruntfile:
-        pre
-          code grunt.loadNpmTasks('grunt-nsp-package');
-        p Then use the task <code>validate-package</code> build tasks eg.
-        pre
-          code grunt.registerTask('default', 'validate-package')
-        h4 Example Usage
-        pre
-          code
-            | $ grunt validate-package
-            | Running 'validate-package' task
-            | /example/project/package.json
-            | No vulnerable modules found<br />
-            | Done, without errors.
-        pre
-          code
-            | $ grunt validate-package
-            | Running 'validate-package' task
-            | /example/project/package.json
-            | >> Name     Installed        Patched       Vulnerable Dependency  Advisory URL
-            | >> send       0.0.4         >= 0.8.4       express                See website
-            | >> qs         0.5.1          >= 1.x        express > connect      See website
-            | Warning: known vulnerable modules found Use --force to continue.<br />
-            | Aborted due to warnings.
+          code nsp check
 
       section
         h3 gulp-nsp
@@ -67,17 +33,17 @@ block content
         pre
           code
             | var gulpNSP = require('gulp-nsp');
-            | 
+            | &nbsp;
             | //To check your package.json
             | gulp.task('nsp', function (cb) {
             |   gulpNSP({package: __dirname + '/package.json'}, cb);
             | });
-            | 
+            | &nbsp;
             | //To check your shrinkwrap.json
             | gulp.task('nsp', function (cb) {
             |   gulpNSP({shrinkwrap: __dirname + '/npm-shrinkwrap.json'}, cb);
             | });
-            |
+            | &nbsp;
             | //If you don't want to stop your gulp flow if some vulnerabilities have been found use the stopOnError option:
             | gulp.task('nsp', function (cb) {
             |   gulpNSP({

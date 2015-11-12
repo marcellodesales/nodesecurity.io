@@ -1,10 +1,10 @@
 {
   "name": "nodesecurity-www",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Node Security Project",
   "main": "index.js",
   "scripts": {
-    "test": "cd tests; ../node_modules/.bin/nodeunit server.js",
+    "test": "echo 'no tests yo'",
     "start-dev": "grunt serve",
     "start-prod": "node server.js",
     "start": "if [ \"$NODE_ENV\" = \"production\" ]; then npm run start-prod; else npm run start-dev; fi"
@@ -24,20 +24,25 @@
   },
   "homepage": "https://github.com/nodesecurity/nodesecurity-www",
   "dependencies": {
+    "acorn-globals": "1.0.6",
     "boom": "^2.6.1",
     "config": "^1.8.1",
+    "getconfig": "^2.2.0",
     "good": "^6.3.0",
     "good-console": "^5.0.2",
     "hapi": "^8.1.0",
     "hoek": "^2.10.0",
     "jade": "^1.8.1",
     "joi": "^6.6.1",
+    "marked": "^0.3.5",
     "meta-marked": "^0.3.1",
+    "moment": "^2.10.6",
     "postageapp": "^1.1.2",
     "postmark": "~0.2.0",
     "rss": "^1.0.1",
     "semver": "^2.3.2",
-    "walk": "~2.3.1"
+    "walk": "~2.3.1",
+    "wreck": "^6.3.0"
   },
   "devDependencies": {
     "autoprefixer-stylus": "^0.6.0",

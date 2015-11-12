@@ -1,36 +1,48 @@
 extends layout
 
-
 block content
   .container.advisories(role='main')
     h2.center.mt2 Advisories
-    - each year in Object.keys(index).sort().reverse()
+    if pre.advisories.results
       table.table-outlined.table-with-hover
         thead
           tr
-            th= year
-            th
-        tbody
-          each advisory in index[year]
-            tr
-              td
-                div.advisory-title: a(href='/advisories/#{advisory.meta.url}') #{advisory.meta.title}
-                div.advisory-date #{advisory.meta.publish_date}
-              td
-                div.module-name: a(href='/advisories/module/#{advisory.meta.module_name}') #{advisory.meta.module_name}
-                if advisory.meta.vulnerable_versions === '<=99.999.99999'
-                  div.module-version Vulnerable: 
-                    span All
-                else
-                  div.module-version Vulnerable: 
-                    span #{advisory.meta.vulnerable_versions}
+            th Advisories
+            th Patch Details
+        each advisory in pre.advisories.results
+          tr
+            td
+              div.advisory-title: a(href='/advisories/#{advisory.id}') #{advisory.title}
+              div.advisory-date #{moment(advisory.publish_date).format('MMMM Do, YYYY')}
+            td
+              div.module-name: a(href='https://www.npmjs.com/#{advisory.module_name}') #{advisory.module_name}
+              if advisory.vulnerable_versions === '<=99.999.99999'
+                div.module-version Vulnerable:
+                  span All
+              else
+                div.module-version Vulnerable:
+                  span #{advisory.vulnerable_versions}
 
-                if advisory.meta.patched_versions === '<0.0.0'
-                  div.module-version Patched: 
-                    span None
-                else
-                  div.module-version Patched: 
-                    span #{advisory.meta.patched_versions}
+              if advisory.patched_versions === '<0.0.0'
+                div.module-version Patched:
+                  span None
+              else
+                div.module-version Patched:
+                  span #{advisory.patched_versions}
 
+      nav.center(role='navigation')
+        ul.list-unstyled.list-inline.pagination
+          - var currentPage = 0;
+          - if (pre.advisories.offset > 1) {
+          -   currentPage = pre.advisories.offset / 10
+          - }
+          - var totalPages = parseInt(pre.advisories.total / 10);
 
+          li
+            if currentPage > 0
+              a(href='?page=' + (currentPage - 1)) « Prev
+          li Page #{currentPage} of #{totalPages}
+          li
+            if currentPage < totalPages
+              a(href='?page=' + (currentPage + 1)) Next »
 

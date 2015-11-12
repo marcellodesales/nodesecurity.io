@@ -1,0 +1,16 @@
+publish:
+  docker:
+    registry: tutum.co
+    username: $$USERNAME
+    password: $$DOCKER_PASSWORD
+    email: $$EMAIL
+    repo: $$REPO
+    tag: $$BUILD_NUMBER
+    when:
+      event: push
+      branch: master
+notify:
+  slack:
+    webhook_url: $$SLACK_HOOK
+    channel: alerts
+    username: drone
