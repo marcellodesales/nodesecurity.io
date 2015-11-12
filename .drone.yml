@@ -5,7 +5,7 @@ publish:
     password: $$DOCKER_PASSWORD
     email: $$EMAIL
     repo: $$REPO
-    tag: $$BUILD_NUMBER
+    tag: "$$BUILD_NUMBER"
     when:
       event: push
       branch: master
