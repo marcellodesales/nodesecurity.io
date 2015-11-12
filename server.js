@@ -110,6 +110,14 @@ server.route({
 
 server.route({
     method: 'GET',
+    path: '/tos',
+    handler: {
+        view: 'tos'
+    }
+});
+
+server.route({
+    method: 'GET',
     path: '/advisories',
     config: {
         validate: {
