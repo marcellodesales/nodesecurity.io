@@ -1,10 +1,10 @@
 publish:
   docker:
-    registry: tutum.co
-    username: $$USERNAME
+    registry: $$DOCKER_REGISTRY
+    username: $$DOCKER_USERNAME
     password: $$DOCKER_PASSWORD
-    email: $$EMAIL
-    repo: $$REPO
+    email: $$DOCKER_EMAIL
+    repo: $${DOCKER_REGISTRY}/$${DOCKER_USERNAME}/nsp-web
     tag: "$$BUILD_NUMBER"
     when:
       event: push
