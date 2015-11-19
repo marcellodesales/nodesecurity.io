@@ -20,5 +20,6 @@ deploy:
       event: deployment
     username: $${TUTUM_USERNAME}
     api_key: $${TUTUM_API_KEY}
+    service: web.nodesecurity
     docker_image: $${DOCKER_REGISTRY}/$${DOCKER_USERNAME}/nsp-web:$${BUILD_NUMBER}
     redeploy: true
