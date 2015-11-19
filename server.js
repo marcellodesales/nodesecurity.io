@@ -167,6 +167,31 @@ server.route({
 });
 
 server.route({
+   method: 'GET',
+    path: '/advisories/module/{module_name}',
+    config: {
+        validate: {
+            params: {
+                module_name: Joi.string()  
+            },
+            query: {
+                page: Joi.number().integer().min(0).default(0)
+            }
+        },
+        pre: [
+            {method: API.fetchByModule, assign: 'advisories'}
+        ]
+    },
+    handler: {
+        view: {
+            template: 'advisories_by_module'
+        }
+    }
+
+});
+
+// LEGACY FOR OLD NSP CLIENT
+server.route({
     method: 'GET',
     path: '/validate/{module}/{version}',
     config: {
@@ -177,6 +202,7 @@ server.route({
     }
 });
 
+// LEGACY FOR OLD NSP CLIENT
 server.route({
     method: 'POST',
     path: '/validate/shrinkwrap',
