@@ -14,3 +14,11 @@ notify:
     webhook_url: $$SLACK_HOOK
     channel: alerts
     username: drone
+deploy:
+  tutum:
+    when:
+      event: deployment
+    username: $${TUTUM_USERNAME}
+    api_key: $${TUTUM_API_KEY}
+    docker_image: $${DOCKER_REGISTRY}/$${DOCKER_USERNAME}/nsp-web:$${BUILD_NUMBER}
+    redeploy: true
