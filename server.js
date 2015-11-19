@@ -9,210 +9,6 @@ var marked = require('marked');
 var server = new Hapi.Server(config.hapi.options);
 server.connection({ host: config.hapi.hostname, port: config.hapi.port });
 
-server.views({
-    engines: {
-        jade: require('jade'),
-    },
-    path: './views',
-    isCached: process.env.NODE_ENV==='production',
-    context: {
-        moment: moment
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/',
-    handler: {
-        view: 'index'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/{path*}',
-    handler: {
-        directory: { path: './public', listing: false, index: true }
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/contribute',
-    handler: {
-        view: 'contribute'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/report',
-    handler: {
-        view: 'report'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/report/{module}',
-    handler: {
-        view: 'report'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/thanks',
-    handler: {
-        view: 'email-success'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/email-error',
-    handler: {
-        view: 'email-error'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/research',
-    handler: {
-        view: 'research'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/resources',
-    handler: {
-        view: 'resources'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/tools',
-    handler: {
-        view: 'tools'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/newsletter',
-    handler: {
-        view: 'newsletter'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/tos',
-    handler: {
-        view: 'tos'
-    }
-});
-
-server.route({
-    method: 'GET',
-    path: '/advisories',
-    config: {
-        validate: {
-            query: {
-                page: Joi.number().integer().min(0).default(0)
-            }
-        },
-        pre: [
-            {method: API.fetchAll, assign: 'advisories'}
-        ]
-    },
-    handler: {
-        view: {
-            template: 'advisories'
-        }
-    }
-});
-
-server.route({
-   method: 'GET',
-    path: '/advisories/{id}',
-    config: {
-        validate: {
-            params: {
-                id: Joi.string()
-            }
-        },
-        pre: [
-            {method: API.fetchOne, assign: 'advisory'}
-        ]
-    },
-    handler: function (request, reply) {
-
-        var overviewHtml = marked(request.pre.advisory.overview);
-        var recommendationHtml = marked(request.pre.advisory.recommendation);
-        var referencesHtml = marked(request.pre.advisory.references);
-
-        var html = {
-            overview: overviewHtml,
-            recommendation: recommendationHtml,
-            references: referencesHtml
-        };
-
-        return reply.view('advisory', { advisory: request.pre.advisory, html: html });
-    }
-
-});
-
-server.route({
-   method: 'GET',
-    path: '/advisories/module/{module_name}',
-    config: {
-        validate: {
-            params: {
-                module_name: Joi.string()  
-            },
-            query: {
-                page: Joi.number().integer().min(0).default(0)
-            }
-        },
-        pre: [
-            {method: API.fetchByModule, assign: 'advisories'}
-        ]
-    },
-    handler: {
-        view: {
-            template: 'advisories_by_module'
-        }
-    }
-
-});
-
-// LEGACY FOR OLD NSP CLIENT
-server.route({
-    method: 'GET',
-    path: '/validate/{module}/{version}',
-    config: {
-        handler: function (request, reply) {
-
-            return reply([{}]);
-        }
-    }
-});
-
-// LEGACY FOR OLD NSP CLIENT
-server.route({
-    method: 'POST',
-    path: '/validate/shrinkwrap',
-    config: {
-        handler: function (request, reply) {
-
-            return reply([{}]);
-        },
-    }
-});
 
 server.register([
     {
@@ -228,20 +24,233 @@ server.register([
                 }
             }]
         }
+    },
+    {
+        register: require('vision'),
+        options: {}
+    },
+    {
+        register: require('inert'),
+        options: {}
     }
 ], function (err) {
     if (err) {
-        console.log('Failed to load plugin: ' + err);
-    } else {
-        console.log('Loaded advisories');
-        // Start the server
-        server.start(function (err) {
-            if (err) {
-                throw err;
-            }
-            console.log('Started Server on port: ', config.hapi.port);
-        });
+        return console.log('Failed to load plugin: ' + err);
     }
+
+    server.views({
+        engines: {
+            jade: require('jade'),
+        },
+        path: './views',
+        isCached: process.env.NODE_ENV==='production',
+        context: {
+            moment: moment
+        }
+    });
+
+
+    server.route({
+        method: 'GET',
+        path: '/',
+        handler: {
+            view: 'index'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/{path*}',
+        handler: {
+            directory: { path: './public', listing: false, index: true }
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/contribute',
+        handler: {
+            view: 'contribute'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/report',
+        handler: {
+            view: 'report'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/report/{module}',
+        handler: {
+            view: 'report'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/thanks',
+        handler: {
+            view: 'email-success'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/email-error',
+        handler: {
+            view: 'email-error'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/research',
+        handler: {
+            view: 'research'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/resources',
+        handler: {
+            view: 'resources'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/tools',
+        handler: {
+            view: 'tools'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/newsletter',
+        handler: {
+            view: 'newsletter'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/tos',
+        handler: {
+            view: 'tos'
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/advisories',
+        config: {
+            validate: {
+                query: {
+                    page: Joi.number().integer().min(0).default(0)
+                }
+            },
+            pre: [
+                {method: API.fetchAll, assign: 'advisories'}
+            ]
+        },
+        handler: {
+            view: {
+                template: 'advisories'
+            }
+        }
+    });
+
+    server.route({
+       method: 'GET',
+        path: '/advisories/{id}',
+        config: {
+            validate: {
+                params: {
+                    id: Joi.string()
+                }
+            },
+            pre: [
+                {method: API.fetchOne, assign: 'advisory'}
+            ]
+        },
+        handler: function (request, reply) {
+
+            var overviewHtml = marked(request.pre.advisory.overview);
+            var recommendationHtml = marked(request.pre.advisory.recommendation);
+            var referencesHtml = marked(request.pre.advisory.references);
+
+            var html = {
+                overview: overviewHtml,
+                recommendation: recommendationHtml,
+                references: referencesHtml
+            };
+
+            return reply.view('advisory', { advisory: request.pre.advisory, html: html });
+        }
+
+    });
+
+    server.route({
+       method: 'GET',
+        path: '/advisories/module/{module_name}',
+        config: {
+            validate: {
+                params: {
+                    module_name: Joi.string()
+                },
+                query: {
+                    page: Joi.number().integer().min(0).default(0)
+                }
+            },
+            pre: [
+                {method: API.fetchByModule, assign: 'advisories'}
+            ]
+        },
+        handler: {
+            view: {
+                template: 'advisories_by_module'
+            }
+        }
+
+    });
+
+    // LEGACY FOR OLD NSP CLIENT
+    server.route({
+        method: 'GET',
+        path: '/validate/{module}/{version}',
+        config: {
+            handler: function (request, reply) {
+
+                return reply([{}]);
+            }
+        }
+    });
+
+    // LEGACY FOR OLD NSP CLIENT
+    server.route({
+        method: 'POST',
+        path: '/validate/shrinkwrap',
+        config: {
+            handler: function (request, reply) {
+
+                return reply([{}]);
+            },
+        }
+    });
+    // Start the server
+    server.start(function (err) {
+        if (err) {
+            throw err;
+        }
+        console.log('Started Server on port: ', config.hapi.port);
+    });
+
 });
 
 
