@@ -34,6 +34,26 @@ module.exports.fetchOne = function (request, reply) {
     });
 };
 
+// Fetch by Module Name
+module.exports.fetchByModule = function (request, reply) {
+
+    wreck.get('/advisories/module/' + request.params.module_name, function (err, res, payload) {
+        if (err || res.statusCode !== 200) {
+            if (err) {
+                request.log(['error', 'api'], err);
+            }
+
+            return reply(Boom.notFound(''));
+        }
+
+        if (payload.offset > payload.total) {
+            return reply().takeover().redirect('/advisories');
+        }
+        
+        return reply(payload);
+    });
+};
+
 module.exports.fetchAll = function (request, reply) {
     var limit = 10;
     var offset = request.query.page * limit;
