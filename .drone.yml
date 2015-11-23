@@ -7,8 +7,7 @@ publish:
     repo: $${DOCKER_REGISTRY}/$${DOCKER_USERNAME}/nsp-web
     tag: "$$BUILD_NUMBER"
     when:
-      event: push
-      branch: master
+      event: deployment
 notify:
   slack:
     webhook_url: $$SLACK_HOOK
