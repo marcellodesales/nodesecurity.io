@@ -7,7 +7,9 @@
     "test": "echo 'no tests yo'",
     "start-dev": "grunt serve",
     "start-prod": "node server.js",
-    "start": "if [ \"$NODE_ENV\" = \"production\" ]; then npm run start-prod; else npm run start-dev; fi"
+    "start": "if [ \"$NODE_ENV\" = \"production\" ]; then npm run start-prod; else npm run start-dev; fi",
+    "lint": "jshint .",
+    "validate": "npm ls"
   },
   "repository": {
     "type": "git",
@@ -24,35 +26,42 @@
   },
   "homepage": "https://github.com/nodesecurity/nodesecurity-www",
   "dependencies": {
-    "acorn-globals": "1.0.6",
-    "boom": "^2.6.1",
-    "config": "^1.8.1",
+    "acorn-globals": "2.0.0",
+    "boom": "^3.0.0",
+    "config": "^1.17.1",
     "getconfig": "^2.2.0",
     "good": "^6.3.0",
-    "good-console": "^5.0.2",
-    "hapi": "^8.1.0",
-    "hoek": "^2.10.0",
+    "good-console": "^5.2.0",
+    "hapi": "^11.1.1",
+    "hoek": "^3.0.4",
+    "inert": "^3.2.0",
     "jade": "^1.8.1",
-    "joi": "^6.6.1",
+    "joi": "^7.0.0",
     "marked": "^0.3.5",
     "meta-marked": "^0.3.1",
     "moment": "^2.10.6",
     "postageapp": "^1.1.2",
-    "postmark": "~0.2.0",
-    "rss": "^1.0.1",
-    "semver": "^2.3.2",
-    "walk": "~2.3.1",
-    "wreck": "^6.3.0"
+    "postmark": "^1.2.1",
+    "rss": "^1.2.1",
+    "semver": "^5.1.0",
+    "vision": "^4.0.1",
+    "walk": "^2.3.1",
+    "wreck": "^7.0.0"
   },
   "devDependencies": {
-    "autoprefixer-stylus": "^0.6.0",
+    "autoprefixer-stylus": "^0.8.1",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
-    "grunt-contrib-cssmin": "^0.12.3",
-    "grunt-contrib-stylus": "^0.21.0",
+    "grunt-contrib-cssmin": "^0.14.0",
+    "grunt-contrib-stylus": "^0.22.0",
     "grunt-contrib-watch": "^0.6.1",
-    "nodeunit": "~0.8.4",
-    "precommit-hook": "~1.0.7",
-    "yeticss": "^6.0.6"
-  }
+    "nodeunit": "~0.9.1",
+    "precommit-hook": "~3.0.0",
+    "yeticss": "^7.0.5"
+  },
+  "pre-commit": [
+    "lint",
+    "validate",
+    "test"
+  ]
 }
