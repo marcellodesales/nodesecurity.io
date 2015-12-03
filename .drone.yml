@@ -1,10 +1,9 @@
 publish:
   docker:
-    registry: $$DOCKER_REGISTRY
     username: $$DOCKER_USERNAME
     password: $$DOCKER_PASSWORD
     email: $$DOCKER_EMAIL
-    repo: $${DOCKER_REGISTRY}/$${DOCKER_USERNAME}/nsp-web
+    repo: andyet/nsp-web
     tag: "$$BUILD_NUMBER"
     when:
       event: deployment
@@ -13,12 +12,3 @@ notify:
     webhook_url: $$SLACK_HOOK
     channel: alerts
     username: drone
-deploy:
-  tutum:
-    when:
-      event: deployment
-    username: $${TUTUM_USERNAME}
-    api_key: $${TUTUM_API_KEY}
-    service: web.nodesecurity
-    docker_image: $${DOCKER_REGISTRY}/$${DOCKER_USERNAME}/nsp-web:$${BUILD_NUMBER}
-    redeploy: true
