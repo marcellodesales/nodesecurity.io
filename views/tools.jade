@@ -51,3 +51,10 @@ block content
             |     stopOnError: false
             |   }, cb);
             | });
+            | //For enterprises building behind a proxy (HTTP_PROXY or HTTPS_PROXY), use the proxy option:
+            | gulp.task('nsp', function (cb) {
+            |   gulpNSP({
+            |     shrinkwrap: __dirname + '/npm-shrinkwrap.json',
+            |     proxy: process.env.HTTPS_PROXY
+            |   }, cb);
+            | });
